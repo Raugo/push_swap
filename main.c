@@ -28,27 +28,44 @@ int	checklist(t_list *list, int count, int value)
 	return (1);
 }
 
-int	checkargs(int argc, char **argv)
+int checkconversion(char* numc, int numi)
+{
+	int index;
+
+	index = 0;
+	if (numi < 0)
+	{
+		if (numc[0] == '-')
+		{
+			numc++;
+			numi = -numi;
+		}
+		else
+			return (1);
+	}
+	while (numi != 0)
+	{
+		numi = numi / 10;
+		index++;
+	}
+	if (index == ft_strlen(numc))
+		return (0);
+	return (1);
+}
+
+int	convertargs(int argc, char **argv)
 {
 	int		count;
-	int		check;
-	int		index;
+	int		*nums;
 
 	count = 1;
-	check = 0;
-	index = 0;
+	nums = malloc(argc * sizeof(int));
 	while (count < argc)
 	{
-		while (argv[count][index] != 0)
-			check += ft_isdigit(argv[count][index++]);
-		if (index != check)
-		{
-			write(1, "Error\n", 6);
+		nums[count] = ft_atoi(argv[count]);
+		if (checkconversion(argv[count], nums[count]))
 			return (1);
-		}
 		count++;
-		index = 0;
-		check = 0;
 	}
 	return (0);
 }
@@ -60,24 +77,27 @@ int	main(int argc, char **argv)
 	t_list	*addlist;
 	int		tempint;
 
-	if (checkargs(argc, argv))
+	if (convertargs(argc, argv))
 		return (1);
 	count = 1;
-	while (count < argc)
+	if (argc > 2)
 	{
-		if (count == 1)
-			mylist = ft_lstnew((void*)(long)ft_atoi(argv[count]));
-		else
+		while (count < argc)
 		{
-			if (checklist(mylist, count, ft_atoi(argv[count])))
-			{
-				addlist = ft_lstnew((void*)(long)ft_atoi(argv[count]));
-				ft_lstadd_back(&mylist, addlist);
-			}
+			if (count == 1)
+				mylist = ft_lstnew((void*)(long)ft_atoi(argv[count]));
 			else
-				return (1);
-		}	
-		count++;
+			{
+				if (checklist(mylist, count, ft_atoi(argv[count])))
+				{
+					addlist = ft_lstnew((void*)(long)ft_atoi(argv[count]));
+					ft_lstadd_back(&mylist, addlist);
+				}
+				else
+					return (1);
+			}	
+			count++;
+		}
 	}
 	printf("Valor del primer elemento %d", (int)(long)mylist->content);
 }
