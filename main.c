@@ -6,13 +6,18 @@
 /*   By: josuna-t <josuna-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/20 13:59:44 by josuna-t          #+#    #+#             */
-/*   Updated: 2021/12/21 17:06:55 by josuna-t         ###   ########.fr       */
+/*   Updated: 2022/01/13 15:15:43 by josuna-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
 #include <unistd.h>
 #include <stdio.h>
+
+void	ft_sab(t_list **list);
+void	ft_pab(t_list **list1, t_list **list2);
+void	ft_rrab(t_list **list);
+void	orderlist(t_list *list, int argc);
 
 int	checklist(t_list *list, int count, int value)
 {
@@ -75,12 +80,15 @@ int	main(int argc, char **argv)
 	int		count;
 	t_list	*mylist;
 	t_list	*addlist;
-	int		tempint;
 
 	if (convertargs(argc, argv))
 		return (1);
 	count = 1;
+<<<<<<< HEAD
+	if (argc >= 2)
+=======
 	if (argc > 2)
+>>>>>>> 9425d3c808046d874fe57ad712cfa0713dd25d75
 	{
 		while (count < argc)
 		{
@@ -95,9 +103,17 @@ int	main(int argc, char **argv)
 				}
 				else
 					return (1);
+<<<<<<< HEAD
+			}
+			count++;
+		}
+		orderlist(mylist, argc);
+=======
 			}	
 			count++;
 		}
+>>>>>>> 9425d3c808046d874fe57ad712cfa0713dd25d75
 	}
-	printf("Valor del primer elemento %d", (int)(long)mylist->content);
+	else
+		write(1, "Error\n", 6);
 }
