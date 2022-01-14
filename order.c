@@ -6,19 +6,24 @@
 /*   By: josuna-t <josuna-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 13:54:44 by josuna-t          #+#    #+#             */
-/*   Updated: 2022/01/13 15:36:38 by josuna-t         ###   ########.fr       */
+/*   Updated: 2022/01/14 16:14:36 by josuna-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
 #include "push_swap.h"
 #include <unistd.h>
+#include<stdio.h>
+
+int	checkorder(t_list *list);
 
 void	order3(t_list **list)
 {
 	t_list			*mylist;
 
 	mylist = *list;
+	if (checkorder(mylist))
+		return ;
 	if (mylist->next->next->content < mylist->next->content)
 	{
 		if (mylist->next->content > mylist->content)
@@ -41,31 +46,38 @@ void	order3(t_list **list)
 	*list = mylist;
 }
 
-void	order45(t_list **list, t_list **listb, t_list *mylist, int num)
+void	order45(t_list **list, t_list **listb, t_list	*mlist, t_list *mlistb)
 {
-	t_list	*mylistb;
-	int		min;
-	int		index;
-	int		pos;
-
-	index = 0;
-	min = mylist->content;
-	pos = 0;
-	mylistb = *listb;
-	while (mylist->next != 0)
+	if (mlistb->content < mlist->content)
+		ft_pab(listb, list, 'a');
+	else if (mlistb->content < mlist->next->content)
 	{
-		index++;
-		mylist = mylist->next;
-		if (min < mylist->content)
+		ft_rab(list, 'a');
+		ft_pab(listb, list, 'a');
+		ft_rrab(list, 'a');
+	}
+	else if (mlistb->content < mlist->next->next->content)
+	{
+		ft_rab(list, 'a');
+		ft_rab(list, 'a');
+		ft_pab(listb, list, 'a');
+		ft_rrab(list, 'a');
+		ft_rrab(list, 'a');
+	}
+	else
+	{
+		if (mlistb->content < mlist->next->next->next->content)
 		{
-			min = mylist->content;
-
+			ft_rrab(list, 'a');
+		}
+		ft_pab(listb, list, 'a');
+		ft_rab(list, 'a');
 	}
 }
 
 int	checkorder(t_list *list)
 {
-	while (list->next !=0)
+	while (list->next != 0)
 	{
 		if (list->content > list->next->content)
 			return (0);
@@ -76,11 +88,9 @@ int	checkorder(t_list *list)
 
 void	orderlist(t_list *list, int argc)
 {
-	t_list	*mylistb;
-
-	if (checkorder(list))
-		return ;
-	mylistb = ft_lstnew((void*)(long)2147483647 + 1);
+	t_list	*listb;
+	int		pos;
+	listb = ft_lstnew((void *)(long)2147483647 + 1);
 	if (argc == 3)
 	{
 		if (list->content > list->next->content)
@@ -88,18 +98,14 @@ void	orderlist(t_list *list, int argc)
 	}
 	if (argc == 4)
 		order3(&list);
-	else if (argc == 5)
+	if (argc == 6)
+		ft_pab(&list, &listb, 'b');
+	if (argc == 5 || argc == 6)
 	{
-		ft_pab(&list, &mylistb, 'b');
+		ft_pab(&list, &listb, 'b');
 		order3(&list);
-		order45(&list, &mylistb, list, 4);
+		order45(&list, &listb, list, listb);
 	}
-	else if (argc == 6)
-	{
-		ft_pab(&list, &mylistb, 'b');
-		ft_pab(&list, &mylistb, 'b');
-		order3(&list);
-		order45(&list, &mylistb, list, 4);
-		order45(&list, &mylistb, list, 5);
-	}
+	if (argc == 6)
+		order45(&list, &listb, list, listb);
 }
