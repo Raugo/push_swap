@@ -6,14 +6,14 @@
 /*   By: josuna-t <josuna-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 10:54:45 by josuna-t          #+#    #+#             */
-/*   Updated: 2022/01/18 17:48:20 by josuna-t         ###   ########.fr       */
+/*   Updated: 2022/01/19 18:05:14 by josuna-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
 #include "push_swap.h"
 
-static void	ft_delcontent(void *content)
+void	ft_delcontent(void *content)
 {
 	content = 0;
 	return ;
@@ -39,7 +39,7 @@ void	orderbig(t_list **list, t_list **listb, int argc, t_list *mylist)
 				ft_pab(&mylist, &mylistb, 'b');
 			num++;
 		}
-		while (mylistb->content != (void *)(unsigned long)2147483648)
+		while (mylistb != 0)
 		{
 			ft_pab(&mylistb, &mylist, 'a');
 		}

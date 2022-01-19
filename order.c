@@ -6,7 +6,7 @@
 /*   By: josuna-t <josuna-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 13:54:44 by josuna-t          #+#    #+#             */
-/*   Updated: 2022/01/19 12:22:23 by josuna-t         ###   ########.fr       */
+/*   Updated: 2022/01/19 17:59:03 by josuna-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,6 @@
 #include "push_swap.h"
 #include <unistd.h>
 #include<stdio.h>
-
-static void	ft_delcontent(void *content)
-{
-	content = 0;
-	return ;
-}
 
 void	order3(t_list **list)
 {
@@ -90,11 +84,10 @@ int	checkorder(t_list *list)
 	return (1);
 }
 
-void	orderlist(t_list *list, int argc)
+void	orderlist(t_list *list, t_list *listb, int argc)
 {
-	t_list	*listb;
-
-	listb = ft_lstnew((void *)(long)2147483647 + 1);
+	argc++;
+	listb = 0;
 	if (argc == 3)
 	{
 		if (list->content > list->next->content)
