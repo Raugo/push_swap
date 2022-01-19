@@ -6,7 +6,7 @@
 /*   By: josuna-t <josuna-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 13:54:44 by josuna-t          #+#    #+#             */
-/*   Updated: 2022/01/14 16:14:36 by josuna-t         ###   ########.fr       */
+/*   Updated: 2022/01/19 12:22:23 by josuna-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,11 @@
 #include <unistd.h>
 #include<stdio.h>
 
-int	checkorder(t_list *list);
+static void	ft_delcontent(void *content)
+{
+	content = 0;
+	return ;
+}
 
 void	order3(t_list **list)
 {
@@ -89,7 +93,7 @@ int	checkorder(t_list *list)
 void	orderlist(t_list *list, int argc)
 {
 	t_list	*listb;
-	int		pos;
+
 	listb = ft_lstnew((void *)(long)2147483647 + 1);
 	if (argc == 3)
 	{
@@ -108,4 +112,7 @@ void	orderlist(t_list *list, int argc)
 	}
 	if (argc == 6)
 		order45(&list, &listb, list, listb);
+	else if (argc > 6)
+		exnumbers(&list, list, argc, &listb);
+	ft_lstclear(&list, &ft_delcontent);
 }

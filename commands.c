@@ -6,7 +6,7 @@
 /*   By: josuna-t <josuna-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 15:01:02 by josuna-t          #+#    #+#             */
-/*   Updated: 2022/01/14 15:52:23 by josuna-t         ###   ########.fr       */
+/*   Updated: 2022/01/18 17:13:30 by josuna-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,18 @@ void	ft_pab(t_list **list1, t_list **list2, char letter)
 	mylist2 = *list2;
 	if (mylist->content != (void *)(unsigned long) 2147483648)
 	{
-		temp = ft_lstnew(mylist->content);
-		if (mylist->next != 0)
-			mylist = mylist->next;
-		else
-			mylist->content = (void *)(unsigned long)2147483648;
+		temp = mylist->next;
 		if (mylist2->content != (void *)(unsigned long)2147483648)
-			temp->next = mylist2;
+			mylist->next = mylist2;
 		else
-			temp->next = 0;
-		*list1 = mylist;
-		*list2 = temp;
+		{
+			free(mylist2);
+			mylist->next = 0;
+		}
+		if (!temp)
+			temp = ft_lstnew((void *)(long)2147483647 + 1);	
+		*list1 = temp;
+		*list2 = mylist;
 	}
 	write(1, "p", 1);
 	write(1, &letter, 1);

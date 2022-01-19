@@ -6,20 +6,16 @@
 /*   By: josuna-t <josuna-t@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/20 13:59:44 by josuna-t          #+#    #+#             */
-/*   Updated: 2022/01/14 15:48:27 by josuna-t         ###   ########.fr       */
+/*   Updated: 2022/01/19 15:32:33 by josuna-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
 #include <unistd.h>
 #include <stdio.h>
+#include "push_swap.h"
 
-void	ft_sab(t_list **list);
-void	ft_pab(t_list **list1, t_list **list2);
-void	ft_rrab(t_list **list);
-void	orderlist(t_list *list, int argc);
-
-int	checklist(t_list *list, int count, int value)
+int	checklist(t_list *list, int value)
 {
 	t_list	*mylist;
 
@@ -33,9 +29,9 @@ int	checklist(t_list *list, int count, int value)
 	return (1);
 }
 
-int checkconversion(char* numc, int numi)
+int	checkconversion(char *numc, int numi)
 {
-	int index;
+	int	index;
 
 	index = 0;
 	if (numi < 0)
@@ -48,12 +44,14 @@ int checkconversion(char* numc, int numi)
 		else
 			return (1);
 	}
+	if (numi == 0)
+		index++;
 	while (numi != 0)
 	{
 		numi = numi / 10;
 		index++;
 	}
-	if (index == ft_strlen(numc))
+	if (index == (int)ft_strlen(numc))
 		return (0);
 	return (1);
 }
@@ -63,47 +61,84 @@ int	convertargs(int argc, char **argv)
 	int		count;
 	int		*nums;
 
+	if (argc <= 1)
+		exit(0);
 	count = 1;
 	nums = malloc(argc * sizeof(int));
 	while (count < argc)
 	{
 		nums[count] = ft_atoi(argv[count]);
 		if (checkconversion(argv[count], nums[count]))
+		{
+			free(nums);
 			return (1);
+		}
 		count++;
 	}
+	free(nums);
 	return (0);
+}
+
+void	checkargs(int argc, char **argv)
+{
+	int		cnt;
+	t_list	*mylist;
+	t_list	*addlist;
+
+	cnt = 2;
+	mylist = ft_lstnew((void *)(intptr_t)ft_atoi(argv[1]));
+	while (cnt < argc)
+	{
+		if (checklist(mylist, ft_atoi(argv[cnt])))
+		{
+			addlist = ft_lstnew((void *)(intptr_t)ft_atoi(argv[cnt++]));
+			ft_lstadd_back(&mylist, addlist);
+		}
+		else
+		{
+			exit (1);
+		}
+	}
+	orderlist(mylist, argc);
 }
 
 int	main(int argc, char **argv)
 {
-	int		count;
-	t_list	*mylist;
-	t_list	*addlist;
+	char	**args;
+	int		index;
 
-	if (convertargs(argc, argv))
-		return (1);
-	count = 1;
-	if (argc >= 2)
+	if (argc == 2)
 	{
-		while (count < argc)
+		index = 0;
+		args = ft_split(argv[1], ' ');
+		while (args[index] != 0)
 		{
-			if (count == 1)
-				mylist = ft_lstnew((void*)(long)ft_atoi(argv[count]));
-			else
-			{
-				if (checklist(mylist, count, ft_atoi(argv[count])))
-				{
-					addlist = ft_lstnew((void*)(long)ft_atoi(argv[count]));
-					ft_lstadd_back(&mylist, addlist);
-				}
-				else
-					return (1);
-			}
-			count++;
+			argv[index + 1] = args[index];
+			index++;
 		}
-		orderlist(mylist, argc);
+		argc = ++index;
 	}
-	else
-		write(1, "Error\n", 6);
+	if (!convertargs(argc, argv))
+	{
+		if (argc > 2)
+		{
+			checkargs(argc, argv);
+		}
+		 char *str = "Hola buenos dias";
+    char **matrix;
+    size_t cnt;
+    cnt = 0;
+    //printf("%zu\n", nb_str);
+    printf("\n STR inicial ( ' ' ): %s\n\n", str);
+    matrix = ft_split(str, 0);
+    while (matrix[cnt])
+    {
+        printf("STR %zu: %s\n", cnt, matrix[cnt]);
+        cnt++;
+    }
+    system ("leaks push_swap");
+    return (0);
+		return (0);
+	}
+	write(1, "Error\n", 6);
 }
